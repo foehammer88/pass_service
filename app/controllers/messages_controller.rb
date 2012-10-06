@@ -1,4 +1,8 @@
-class MessagesController < ApplicationController
+#require 'rubygems'
+require 'twilio-ruby'
+
+class MessagesController < ApplicationController 
+
   # GET /messages
   # GET /messages.json
   def index
@@ -44,10 +48,12 @@ class MessagesController < ApplicationController
     @message = Message.new(params[:message])
     @to = params[:message][:to]
     @from = params[:message][:from]
-    @body = params[:message][:from]
+    @body = params[:message][:body]
     
-    params[:message][:ip] = request.remote_ip
-    p params[:message][:ip]
+    send_text_message @to, @from, @body
+
+    #params[:message][:ip] = request.remote_ip
+    #p params[:message][:ip]
 
     respond_to do |format|
       if @message.save
@@ -86,5 +92,15 @@ class MessagesController < ApplicationController
       format.html { redirect_to messages_url }
       format.json { head :no_content }
     end
+  end
+
+  def send_text_message(to, from, body)
+    
+
+    # set up a client to talk to the Twilio REST API
+    @client = Twilio::REST::Client.new(@account_sid, @auth_token)
+    
+    @account = @client.account
+    @smmessage = @account.sms.messages.create({:from => '+14253294880', :to => to, :body => body})
   end
 end
