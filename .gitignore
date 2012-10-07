@@ -16,7 +16,6 @@
 
 # Ignore other unneeded files
 doc/
-vendor/bundle/
 *.swp
 *~
 .project
