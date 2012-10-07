@@ -50,7 +50,7 @@ class MessagesController < ApplicationController
     @from = params[:message][:from]
     @body = params[:message][:body]
     
-    #send_text_message @to, @from, @body
+    send_text_message @to, @from, @body
 
     #params[:message][:ip] = request.remote_ip
     #p params[:message][:ip]
