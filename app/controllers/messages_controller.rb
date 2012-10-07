@@ -1,4 +1,4 @@
-#require 'rubygems'
+require 'rubygems'
 require 'twilio-ruby'
 
 class MessagesController < ApplicationController 
@@ -96,6 +96,8 @@ class MessagesController < ApplicationController
 
   def send_text_message(to, from, body)
     
+    @account_sid = 'ACa19ce2e4d0a7d4ae466a387de9379b31'
+    @auth_token = 'c3b513b6191b3de507e8f2602d3680a8'
 
     # set up a client to talk to the Twilio REST API
     @client = Twilio::REST::Client.new(@account_sid, @auth_token)
