@@ -6,7 +6,8 @@ class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
   def index
-    @messages = Message.all
+    #@messages = Message.all
+    @messages = Message.order("created_at DESC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -38,13 +39,17 @@ class MessagesController < ApplicationController
 
   # GET /messages/1/edit
   def edit
-    @message = Message.find(params[:id])
+    if request.headers["Authorization"] == "Basic 78f91d346838110d9edb6be3996624a9"
+      @message = Message.find(params[:id])
+    end
   end
 
   # POST /messages
   # POST /messages.json
   def create
     params[:message][:ip] = request.remote_ip
+    p request.headers["Authorization"]
+    if request.headers["Authorization"] == "Basic 78f91d346838110d9edb6be3996624a9"
     @message = Message.new(params[:message])
     @to = params[:message][:to]
     @from = params[:message][:from]
@@ -64,11 +69,13 @@ class MessagesController < ApplicationController
         format.json { render json: @message.errors, status: :unprocessable_entity }
       end
     end
+    end
   end
 
   # PUT /messages/1
   # PUT /messages/1.json
   def update
+    if request.headers["Authorization"] == "Basic 78f91d346838110d9edb6be3996624a9"
     @message = Message.find(params[:id])
 
     respond_to do |format|
@@ -80,17 +87,20 @@ class MessagesController < ApplicationController
         format.json { render json: @message.errors, status: :unprocessable_entity }
       end
     end
+    end
   end
 
   # DELETE /messages/1
   # DELETE /messages/1.json
   def destroy
+    if request.headers["Authorization"] == "Basic 78f91d346838110d9edb6be3996624a9"
     @message = Message.find(params[:id])
     @message.destroy
 
     respond_to do |format|
       format.html { redirect_to messages_url }
       format.json { head :no_content }
+    end
     end
   end
 
